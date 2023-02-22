@@ -201,35 +201,64 @@ const getJSON = function (url, errorMsg = "Something Went Wrong !!") {
 /////////////////////////////////////////////////
 
 // Throwing Errors Manually
-const getCountryData = function (country) {
-  // Country 1
-  getJSON(`https://restcountries.com/v3.1/name/${country}`, "Country not Found")
-    .then((data) => {
-      renderCountry(data[0]);
-      const neighbour = data[0].borders[0];
+// const getCountryData = function (country) {
+//   // Country 1
+//   getJSON(`https://restcountries.com/v3.1/name/${country}`, "Country not Found")
+//     .then((data) => {
+//       renderCountry(data[0]);
+//       const neighbour = data[0].borders[0];
 
-      if (!neighbour) {
-        throw new Error("No neighbour!!");
-      }
+//       if (!neighbour) {
+//         throw new Error("No neighbour!!");
+//       }
 
-      // Country 2
-      return getJSON(
-        `https://restcountries.com/v3.1/alpha/${neighbour}`,
-        "Country not Found"
-      );
-    })
-    .then((data) => {
-      renderCountry(data[0], "neighbour");
-    })
-    .catch((e) => {
-      console.error(`${e}🎇🎇🎇`);
-      renderError(`Something went Wrong 🎇🎇🎇 ${e.message}.Try Again !!`);
-    })
-    .finally(() => {
-      countriesContainer.style.opacity = 1;
-    });
-};
+//       // Country 2
+//       return getJSON(
+//         `https://restcountries.com/v3.1/alpha/${neighbour}`,
+//         "Country not Found"
+//       );
+//     })
+//     .then((data) => {
+//       renderCountry(data[0], "neighbour");
+//     })
+//     .catch((e) => {
+//       console.error(`${e}🎇🎇🎇`);
+//       renderError(`Something went Wrong 🎇🎇🎇 ${e.message}.Try Again !!`);
+//     })
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1;
+//     });
+// };
 
-btn.addEventListener("click", function () {
-  getCountryData("portugal");
+// btn.addEventListener("click", function () {
+//   getCountryData("portugal");
+// });
+
+///////////////////////////////////////////////
+
+// Building a simple Promise
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log("Lottery Draw is happening");
+  setTimeout(() => {
+    if (Math.random() >= 0.5) {
+      resolve("YOU WIN !!!");
+    } else {
+      reject(new Error("YOU LOSE !!"));
+    }
+  }, 2000);
+})
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((e) => {
+    console.error(e);
+  });
+
+// Also we can use :
+Promise.resolve("abc").then((x) => {
+  console.log(x);
+});
+
+Promise.reject(new Error("Problem !!")).catch((x) => {
+  console.error(x);
 });
