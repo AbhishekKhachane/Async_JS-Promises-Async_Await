@@ -106,15 +106,42 @@ const renderCountry = function (data, className = "") {
 //////////////////////////////////////
 
 // Handing Promises
+// const getCountryData = function (country) {
+//   const request = fetch(`https://restcountries.com/v3.1/name/${country}`)
+//     .then(function (response) {
+//       console.log(response);
+//       return response.json(); // returns a callback
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//       renderCountry(data[0]);
+//     });
+// };
+
+// getCountryData("india");
+
+//////////////////////////////////////
+
+// Chaining Promises
 const getCountryData = function (country) {
+  // Country 1
   const request = fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then(function (response) {
-      console.log(response);
+    .then((response) => {
+      return response.json(); // returns a callback
+    })
+    .then((data) => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders[0];
+      if (!neighbour) return;
+
+      // Country 2
+      return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
+    })
+    .then((response) => {
       return response.json();
     })
-    .then(function (data) {
-      console.log(data);
-      renderCountry(data[0]);
+    .then((data) => {
+      renderCountry(data[0], "neighbour");
     });
 };
 
