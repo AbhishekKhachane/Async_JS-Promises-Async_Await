@@ -237,28 +237,28 @@ const getJSON = function (url, errorMsg = "Something Went Wrong !!") {
 ///////////////////////////////////////////////
 
 // Building a simple Promise
-const lotteryPromise = new Promise(function (resolve, reject) {
-  console.log("Lottery Draw is happening");
-  setTimeout(() => {
-    if (Math.random() >= 0.5) {
-      resolve("YOU WIN !!!");
-    } else {
-      reject(new Error("YOU LOSE !!"));
-    }
-  }, 2000);
-})
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((e) => {
-    console.error(e);
-  });
+// const lotteryPromise = new Promise(function (resolve, reject) {
+//   console.log("Lottery Draw is happening");
+//   setTimeout(() => {
+//     if (Math.random() >= 0.5) {
+//       resolve("YOU WIN !!!");
+//     } else {
+//       reject(new Error("YOU LOSE !!"));
+//     }
+//   }, 2000);
+// })
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((e) => {
+//     console.error(e);
+//   });
 
-// Also we can use :
-Promise.resolve("abc").then((x) => {
-  console.log(x);
-});
+// // Also we can use :
+// Promise.resolve("abc").then((x) => {
+//   console.log(x);
+// });
 
-Promise.reject(new Error("Problem !!")).catch((x) => {
-  console.error(x);
-});
+// Promise.reject(new Error("Problem !!")).catch((x) => {
+//   console.error(x);
+// });
