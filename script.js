@@ -35,6 +35,15 @@ const renderError = function (msg) {
   // countriesContainer.style.opacity = 1;
 };
 
+// Get JSON
+const getJSON = function (url, errorMsg = "Something Went Wrong !!") {
+  return fetch(url).then((response) => {
+    if (!response.ok) throw new Error(`${errorMsg} ${response.status})`);
+
+    return response.json(); // returns a callback
+  });
+};
+
 ///////////////////////////////////////
 
 // const getCountryData = function (country) {
@@ -156,22 +165,58 @@ const renderError = function (msg) {
 ///////////////////////////////////////////////
 
 // Handling Promise Rejections
+// const getCountryData = function (country) {
+//   // Country 1
+//   const request = fetch(`https://restcountries.com/v3.1/name/${country}`)
+//     .then((response) => {
+//       return response.json(); // returns a callback
+//     })
+//     .then((data) => {
+//       renderCountry(data[0]);
+//       const neighbour = data[0].borders[0];
+//       if (!neighbour) return;
+
+//       // Country 2
+//       return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
+//     })
+//     .then((response) => {
+//       return response.json();
+//     })
+//     .then((data) => {
+//       renderCountry(data[0], "neighbour");
+//     })
+//     .catch((e) => {
+//       console.error(`${e}🎇🎇🎇`);
+//       renderError(`Something went Wrong 🎇🎇🎇 ${e.message}.Try Again !!`);
+//     })
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1;
+//     });
+// };
+
+// btn.addEventListener("click", function () {
+//   getCountryData("india");
+// });
+
+/////////////////////////////////////////////////
+
+// Throwing Errors Manually
 const getCountryData = function (country) {
   // Country 1
-  const request = fetch(`https://restcountries.com/v3.1/name/${country}`)
-    .then((response) => {
-      return response.json(); // returns a callback
-    })
+  getJSON(`https://restcountries.com/v3.1/name/${country}`, "Country not Found")
     .then((data) => {
       renderCountry(data[0]);
       const neighbour = data[0].borders[0];
-      if (!neighbour) return;
+
+      if (!neighbour) {
+        throw new Error("No neighbour!!");
+      }
 
       // Country 2
-      return fetch(`https://restcountries.com/v3.1/alpha/${neighbour}`);
-    })
-    .then((response) => {
-      return response.json();
+      return getJSON(
+        `https://restcountries.com/v3.1/alpha/${neighbour}`,
+        "Country not Found"
+      );
     })
     .then((data) => {
       renderCountry(data[0], "neighbour");
@@ -186,5 +231,5 @@ const getCountryData = function (country) {
 };
 
 btn.addEventListener("click", function () {
-  getCountryData("india");
+  getCountryData("portugal");
 });
