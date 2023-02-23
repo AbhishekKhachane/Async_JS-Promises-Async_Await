@@ -26,7 +26,7 @@ const renderCountry = function (data, className = "") {
 </article>`;
 
   countriesContainer.insertAdjacentHTML("beforeend", html);
-  // countriesContainer.style.opacity = 1;
+  countriesContainer.style.opacity = 1;
 };
 
 // Render Error
@@ -263,50 +263,68 @@ const getJSON = function (url, errorMsg = "Something Went Wrong !!") {
 //   console.error(x);
 // });
 
-const imgContainer = document.querySelector(".images");
+////////////////////////////////////////
 
-const wait = function (seconds) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, seconds * 1000);
-  });
+// Simple Task
+// const imgContainer = document.querySelector(".images");
+
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const img = document.createElement("img");
+//     img.src = imgPath;
+
+//     img.addEventListener("load", function () {
+//       imgContainer.append(img);
+//       resolve(img);
+//     });
+
+//     img.addEventListener("error", function () {
+//       reject(new Error("Image not Found !!"));
+//     });
+//   });
+// };
+
+// let currentImg;
+
+// createImage("/img/img-1.jpg")
+//   .then((img) => {
+//     currentImg = img;
+//     console.log("Img 1 loaded");
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = "none";
+//     return createImage("/img/img-2.jpg");
+//   })
+//   .then((img) => {
+//     currentImg = img;
+//     console.log("Img 2 loaded");
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = "none";
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+
+//////////////////////////////////////////////////
+
+//Async-Await
+const whereAmI = async function (country) {
+  // fetch(`https://restcountries.com/v3.1/name/${country}`).then((res) =>
+  //   console.log(res)
+  // );
+
+  const res = await fetch(`https://restcountries.com/v3.1/name/${country}`); //does not block the main thread
+  const data = await res.json();
+  renderCountry(data[0]);
 };
-
-const createImage = function (imgPath) {
-  return new Promise(function (resolve, reject) {
-    const img = document.createElement("img");
-    img.src = imgPath;
-
-    img.addEventListener("load", function () {
-      imgContainer.append(img);
-      resolve(img);
-    });
-
-    img.addEventListener("error", function () {
-      reject(new Error("Image not Found !!"));
-    });
-  });
-};
-
-let currentImg;
-
-createImage("/img/img-1.jpg")
-  .then((img) => {
-    currentImg = img;
-    console.log("Img 1 loaded");
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = "none";
-    return createImage("/img/img-2.jpg");
-  })
-  .then((img) => {
-    currentImg = img;
-    console.log("Img 2 loaded");
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = "none";
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+whereAmI("india");
+console.log("object");
