@@ -316,15 +316,37 @@ const getJSON = function (url, errorMsg = "Something Went Wrong !!") {
 
 //////////////////////////////////////////////////
 
-//Async-Await
-const whereAmI = async function (country) {
-  // fetch(`https://restcountries.com/v3.1/name/${country}`).then((res) =>
-  //   console.log(res)
-  // );
+//Async-Await ----> Error Handling is done using try-catch block. catch(e) has access to error occured in try block
+// const whereAmI = async function (country) {
+//   // fetch(`https://restcountries.com/v3.1/name/${country}`).then((res) =>
+//   //   console.log(res)
+//   // );
 
-  const res = await fetch(`https://restcountries.com/v3.1/name/${country}`); //does not block the main thread
-  const data = await res.json();
-  renderCountry(data[0]);
+//   const res = await fetch(`https://restcountries.com/v3.1/name/${country}`); //does not block the main thread
+//   const data = await res.json();
+//   renderCountry(data[0]);
+// };
+// whereAmI("india");
+// console.log("object");
+
+/////////////////////////////////////////////
+
+// Running Promises in parallel
+const get3countries = async function (c1, c2, c3) {
+  try {
+    // const [data1] = await getJSON(`https://restcountries.com/v3.1/name/${c1}`);
+    // const [data2] = await getJSON(`https://restcountries.com/v3.1/name/${c2}`);
+    // const [data3] = await getJSON(`https://restcountries.com/v3.1/name/${c3}`);
+
+    const data = await Promise.all([
+      getJSON(`https://restcountries.com/v3.1/name/${c1}`),
+      getJSON(`https://restcountries.com/v3.1/name/${c2}`),
+      getJSON(`https://restcountries.com/v3.1/name/${c3}`),
+    ]);
+    console.log(data.map((d) => d[0].capital));
+  } catch (e) {
+    console.log(e);
+  }
 };
-whereAmI("india");
-console.log("object");
+
+get3countries("india", "portugal", "africa");
